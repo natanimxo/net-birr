@@ -1,0 +1,26 @@
+# Env files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+backend/uploads/
+
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local/personal settings (not shared with the team)
+.claude/settings.local.json
