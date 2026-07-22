@@ -1,4 +1,4 @@
-# [App Name] — Digital Ledger for Ethiopian Small Businesses
+# Net-Birr — Digital Ledger for Ethiopian Small Businesses
 
 A full-stack mobile app that replaces the paper ledger used by Ethiopian shop owners: income/expense tracking, customer debt (ዱቤ) management with tamper-proof edit history, and Telegram-based payment reminders — built end-to-end by one developer.
 
