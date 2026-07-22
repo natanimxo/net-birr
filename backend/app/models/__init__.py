@@ -1,5 +1,7 @@
 from app.models.account import Account
 from app.models.category import Category
+from app.models.debt import Debt
+from app.models.debt_history import DebtHistory
 from app.models.login_session import LoginSession
 from app.models.payment_submission import PaymentSubmission
 from app.models.subscription import Subscription
@@ -14,4 +16,6 @@ __all__ = [
     "Subscription",
     "LoginSession",
     "PaymentSubmission",
+    "Debt",
+    "DebtHistory",
 ]

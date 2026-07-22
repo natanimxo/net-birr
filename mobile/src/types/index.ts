@@ -65,6 +65,28 @@ export interface Transaction {
   created_at: string;
 }
 
+export type DebtStatus = "owed" | "paid";
+export type DebtFieldChanged = "amount" | "status";
+
+export interface Debt {
+  id: string;
+  transaction_id: string | null;
+  counterparty_name: string;
+  counterparty_phone: string | null;
+  amount: string;
+  status: DebtStatus;
+  created_at: string;
+  paid_at: string | null;
+}
+
+export interface DebtHistoryEntry {
+  id: string;
+  field_changed: DebtFieldChanged;
+  old_value: string;
+  new_value: string;
+  changed_at: string;
+}
+
 export interface TodayResponse {
   transactions: Transaction[];
   count_today: number;

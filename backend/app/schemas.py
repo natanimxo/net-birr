@@ -6,6 +6,8 @@ from pydantic import BaseModel, Field
 
 from app.models.account import AccountType
 from app.models.category import CategoryKind
+from app.models.debt import DebtStatus
+from app.models.debt_history import DebtFieldChanged
 from app.models.payment_submission import PaymentMethod, PaymentPlan, PaymentSubmissionStatus
 from app.models.transaction import TransactionType
 from app.models.user import ProfileType
@@ -67,6 +69,11 @@ class TransactionCreate(BaseModel):
     account_id: uuid.UUID | None = None  # falls back to user's default account
     note: str | None = None
     is_credit: bool = False
+    # Required (validated in the router, not here) when is_credit=True - who owes
+    # this money. counterparty_phone is optional since not every debtor's number
+    # is known at entry time, but it's needed later for the Telegram reminder link.
+    counterparty_name: str | None = None
+    counterparty_phone: str | None = None
 
 
 class TransactionOut(BaseModel):
@@ -137,3 +144,35 @@ class RejectSubmissionRequest(BaseModel):
 
 class UploadResponse(BaseModel):
     url: str
+
+
+# ---- Debts ----
+class DebtOut(BaseModel):
+    id: uuid.UUID
+    transaction_id: uuid.UUID | None
+    counterparty_name: str
+    counterparty_phone: str | None
+    amount: Decimal
+    status: DebtStatus
+    created_at: datetime
+    paid_at: datetime | None
+
+    model_config = {"from_attributes": True}
+
+
+class DebtUpdate(BaseModel):
+    # Only the fields being changed need to be sent - anything omitted (None)
+    # is left untouched. Every field that does change gets its own debt_history
+    # row (see routers/debts.py) rather than being silently overwritten.
+    amount: Decimal | None = Field(default=None, gt=0)
+    status: DebtStatus | None = None
+
+
+class DebtHistoryOut(BaseModel):
+    id: uuid.UUID
+    field_changed: DebtFieldChanged
+    old_value: str
+    new_value: str
+    changed_at: datetime
+
+    model_config = {"from_attributes": True}

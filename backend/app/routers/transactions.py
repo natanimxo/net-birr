@@ -8,6 +8,7 @@ from app.config import get_settings
 from app.database import get_db
 from app.models.account import Account
 from app.models.category import Category
+from app.models.debt import Debt
 from app.models.subscription import Subscription, SubscriptionStatus
 from app.models.transaction import Transaction
 from app.models.user import User
@@ -79,6 +80,9 @@ def create_transaction(
                 detail=f"Free plan is limited to {settings.free_daily_transaction_cap} transactions per day. Upgrade to keep logging today.",
             )
 
+    if body.is_credit and not (body.counterparty_name and body.counterparty_name.strip()):
+        raise HTTPException(status_code=400, detail="Debtor name is required when marking a transaction as credit")
+
     category = db.get(Category, body.category_id)
     if category is None or (category.user_id is not None and category.user_id != current_user.id):
         raise HTTPException(status_code=404, detail="Category not found")
@@ -108,6 +112,18 @@ def create_transaction(
         is_credit=body.is_credit,
     )
     db.add(transaction)
+    db.flush()  # assigns transaction.id without ending the transaction, so the debt can link to it
+
+    if body.is_credit:
+        debt = Debt(
+            user_id=current_user.id,
+            transaction_id=transaction.id,
+            counterparty_name=body.counterparty_name.strip(),
+            counterparty_phone=(body.counterparty_phone.strip() if body.counterparty_phone else None),
+            amount=body.amount,
+        )
+        db.add(debt)
+
     db.commit()
     db.refresh(transaction)
     return transaction

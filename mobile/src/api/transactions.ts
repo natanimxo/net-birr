@@ -8,6 +8,8 @@ export interface CreateTransactionInput {
   account_id?: string;
   note?: string;
   is_credit?: boolean;
+  counterparty_name?: string;
+  counterparty_phone?: string;
 }
 
 export const transactionsApi = {

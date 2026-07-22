@@ -24,6 +24,8 @@ export default function AddTransactionScreen({ navigation }: Props) {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
   const [isCredit, setIsCredit] = useState(false);
+  const [counterpartyName, setCounterpartyName] = useState("");
+  const [counterpartyPhone, setCounterpartyPhone] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -55,6 +57,10 @@ export default function AddTransactionScreen({ navigation }: Props) {
       Alert.alert("Pick a category", "Choose a category before saving.");
       return;
     }
+    if (isCredit && !counterpartyName.trim()) {
+      Alert.alert("Who owes this?", "Enter the debtor's name to track this as a debt.");
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -64,6 +70,8 @@ export default function AddTransactionScreen({ navigation }: Props) {
         category_id: categoryId,
         note: note.trim() || undefined,
         is_credit: isCredit,
+        counterparty_name: isCredit ? counterpartyName.trim() : undefined,
+        counterparty_phone: isCredit && counterpartyPhone.trim() ? counterpartyPhone.trim() : undefined,
       });
       navigation.goBack();
     } catch (err) {
@@ -127,6 +135,26 @@ export default function AddTransactionScreen({ navigation }: Props) {
         <Switch value={isCredit} onValueChange={setIsCredit} />
       </View>
 
+      {isCredit && (
+        <View style={styles.debtorBox}>
+          <Text style={styles.label}>Debtor name</Text>
+          <TextInput
+            style={styles.noteInput}
+            value={counterpartyName}
+            onChangeText={setCounterpartyName}
+            placeholder="e.g. Almaz"
+          />
+          <Text style={styles.label}>Debtor phone (optional, for reminders)</Text>
+          <TextInput
+            style={styles.noteInput}
+            value={counterpartyPhone}
+            onChangeText={setCounterpartyPhone}
+            placeholder="e.g. +2519xxxxxxxx"
+            keyboardType="phone-pad"
+          />
+        </View>
+      )}
+
       <TouchableOpacity style={styles.saveButton} onPress={submit} disabled={submitting}>
         {submitting ? <ActivityIndicator color="#fff" /> : <Text style={styles.saveButtonText}>Save</Text>}
       </TouchableOpacity>
@@ -150,6 +178,7 @@ const styles = StyleSheet.create({
   categoryChipTextActive: { color: "#fff" },
   noteInput: { borderWidth: 1, borderColor: "#ddd", borderRadius: 8, padding: 12, marginBottom: 8 },
   creditRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 16 },
+  debtorBox: { marginTop: 8 },
   saveButton: { backgroundColor: "#229ED9", borderRadius: 10, paddingVertical: 14, alignItems: "center", marginTop: 32 },
   saveButtonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
 });

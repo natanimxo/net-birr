@@ -6,10 +6,13 @@ import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-na
 import { useAuth } from "../context/AuthContext";
 import AddTransactionScreen from "../screens/AddTransactionScreen";
 import AdminScreen from "../screens/AdminScreen";
+import DebtDetailScreen from "../screens/DebtDetailScreen";
+import DebtsScreen from "../screens/DebtsScreen";
 import LoginScreen from "../screens/LoginScreen";
 import ProfileTypeScreen from "../screens/ProfileTypeScreen";
 import TodayScreen from "../screens/TodayScreen";
 import UpgradeScreen from "../screens/UpgradeScreen";
+import { Debt } from "../types";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -18,6 +21,8 @@ export type RootStackParamList = {
   AddTransaction: undefined;
   Upgrade: undefined;
   Admin: undefined;
+  Debts: undefined;
+  DebtDetail: { debt: Debt };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -67,6 +72,9 @@ export default function RootNavigator() {
                         <Text style={{ color: "#229ED9", fontWeight: "600" }}>Admin</Text>
                       </TouchableOpacity>
                     )}
+                    <TouchableOpacity onPress={() => navigation.navigate("Debts")}>
+                      <Text style={{ color: "#229ED9", fontWeight: "600" }}>Debts</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Upgrade")}>
                       <Text style={{ color: "#229ED9", fontWeight: "600" }}>Upgrade</Text>
                     </TouchableOpacity>
@@ -81,6 +89,8 @@ export default function RootNavigator() {
             />
             <Stack.Screen name="Upgrade" component={UpgradeScreen} options={{ headerShown: true, title: "Upgrade" }} />
             <Stack.Screen name="Admin" component={AdminScreen} options={{ headerShown: true, title: "Pending Payments" }} />
+            <Stack.Screen name="Debts" component={DebtsScreen} options={{ headerShown: true, title: "Debts" }} />
+            <Stack.Screen name="DebtDetail" component={DebtDetailScreen} options={{ headerShown: true, title: "Debt" }} />
           </>
         )}
       </Stack.Navigator>

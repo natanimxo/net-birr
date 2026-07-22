@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.bot import build_bot_application
 from app.database import SessionLocal
-from app.routers import accounts, admin, auth, categories, payments, transactions
+from app.routers import accounts, admin, auth, categories, debts, payments, transactions
 from app.seed import seed_default_categories
 
 UPLOADS_DIR = Path(__file__).resolve().parent.parent / "uploads"
@@ -57,6 +57,7 @@ app.include_router(auth.router)
 app.include_router(accounts.router)
 app.include_router(categories.router)
 app.include_router(transactions.router)
+app.include_router(debts.router)
 app.include_router(payments.router)
 app.include_router(admin.router)
 

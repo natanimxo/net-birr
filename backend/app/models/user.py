@@ -29,6 +29,7 @@ class User(Base):
     transactions: Mapped[list["Transaction"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     subscription: Mapped["Subscription"] = relationship(back_populates="user", uselist=False, cascade="all, delete-orphan")
     payment_submissions: Mapped[list["PaymentSubmission"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    debts: Mapped[list["Debt"]] = relationship(back_populates="user", cascade="all, delete-orphan")
 
     @property
     def is_admin(self) -> bool:
