@@ -44,7 +44,7 @@ async def lifespan(app: FastAPI):
         await bot_app.shutdown()
 
 
-app = FastAPI(title="Finance App API", lifespan=lifespan)
+app = FastAPI(title="Net-Birr API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

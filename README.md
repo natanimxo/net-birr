@@ -90,7 +90,7 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-*Built by Natanim Mengistu —  · @natanimxo[Telegram](#) · natanimxo@gmail.com[Email](#)*
+*Built by Natanim Mengistu — [Telegram](https://t.me/natanimxo) · [natanimxo@gmail.com](mailto:natanimxo@gmail.com)*
 
 ## Sources
 

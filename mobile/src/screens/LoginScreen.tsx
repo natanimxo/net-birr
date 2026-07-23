@@ -57,7 +57,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Finance App</Text>
+      <Text style={styles.title}>Net-Birr</Text>
       <Text style={styles.subtitle}>Track your money, day to day.</Text>
 
       {status === "waiting" && (
